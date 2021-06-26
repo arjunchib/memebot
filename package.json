@@ -1,0 +1,35 @@
+{
+  "name": "memebot",
+  "version": "1.0.0",
+  "description": "Play memes in discord",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node -r dotenv/config src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fraiser-fan-club/memebot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fraiser-fan-club/memebot/issues"
+  },
+  "homepage": "https://github.com/fraiser-fan-club/memebot#readme",
+  "dependencies": {
+    "bufferutil": "^4.0.3",
+    "discord.js": "^12.5.3",
+    "dotenv": "^10.0.0",
+    "erlpack": "github:discord/erlpack",
+    "libsodium-wrappers": "^0.7.9",
+    "opusscript": "^0.0.8",
+    "prettier": "^2.3.1",
+    "utf-8-validate": "^5.0.5",
+    "zlib-sync": "^0.1.7"
+  },
+  "optionalDependencies": {
+    "@discordjs/opus": "^0.5.3"
+  }
+}
