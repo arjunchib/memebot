@@ -5,8 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "pnpm build && node -r dotenv/config app.js",
-    "build": "esbuild ./src/index.js --platform=node --outfile=app.js",
+    "start": "pnpm build && node -r dotenv/config --enable-source-maps app.js",
+    "build": "esbuild ./src --bundle --sourcemap --platform=node --external:discord.js --format=esm --outfile=app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
