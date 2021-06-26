@@ -6,6 +6,7 @@ specifiers:
   discord.js: ^12.5.3
   dotenv: ^10.0.0
   erlpack: github:discord/erlpack
+  esbuild: ^0.12.9
   libsodium-wrappers: ^0.7.9
   opusscript: ^0.0.8
   prettier: ^2.3.1
@@ -17,6 +18,7 @@ dependencies:
   discord.js: 12.5.3_22f641cd224955968eb9e319429275d0
   dotenv: 10.0.0
   erlpack: github.com/discord/erlpack/e27db8f82892bdb9b28a0547cc394d68b5d2242d
+  esbuild: 0.12.9
   libsodium-wrappers: 0.7.9
   opusscript: 0.0.8
   prettier: 2.3.1
@@ -230,6 +232,12 @@ packages:
   /dotenv/10.0.0:
     resolution: {integrity: sha512-rlBi9d8jpv9Sf1klPjNfFAuWDjKLwTIJJ/VxtoTwIR6hnZxcEOQCZg2oIL3MWBYw5GpUDKOEnND7LXTbIpQ03Q==}
     engines: {node: '>=10'}
+    dev: false
+
+  /esbuild/0.12.9:
+    resolution: {integrity: sha512-MWRhAbMOJ9RJygCrt778rz/qNYgA4ZVj6aXnNPxFjs7PmIpb0fuB9Gmg5uWrr6n++XKwwm/RmSz6RR5JL2Ocsw==}
+    hasBin: true
+    requiresBuild: true
     dev: false
 
   /event-target-shim/5.0.1:
