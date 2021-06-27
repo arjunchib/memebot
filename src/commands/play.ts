@@ -1,9 +1,14 @@
 import fs from "fs";
+import axios from "axios";
 
 export async function play(msg) {
   if (msg.member.voice.channel) {
-    const connection = await msg.member.voice.channel.join();
-    const dispatcher = connection.play(fs.createReadStream("test.ogg"));
+    const name = msg.content.slice(1);
+    const [meme, connection] = await Promise.all([
+      axios.get(`${process.env.MEME_ARCHIVE_BASE_URL}/commands/${name}.json`),
+      msg.member.voice.channel.join(),
+    ]);
+    connection.play(meme.data.audio);
   } else {
     msg.reply("You need to join a voice channel first!");
   }
