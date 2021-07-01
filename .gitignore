@@ -1,6 +1,7 @@
 app.js
 app.js.map
 .DS_Store
+.disky
 
 # Logs
 logs

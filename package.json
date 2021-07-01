@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "pnpm build && node -r dotenv/config --enable-source-maps app.js",
+    "start": "node -r dotenv/config --enable-source-maps",
     "build": "esbuild ./src --bundle --sourcemap --platform=node --external:discord.js --format=esm --outfile=app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/fraiser-fan-club/memebot#readme",
   "dependencies": {
+    "axios": "^0.21.1",
     "bufferutil": "^4.0.3",
     "discord.js": "^12.5.3",
     "dotenv": "^10.0.0",
