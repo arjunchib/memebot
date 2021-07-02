@@ -2,6 +2,7 @@ lockfileVersion: 5.3
 
 specifiers:
   '@discordjs/opus': ^0.5.3
+  '@types/node': ^15.14.0
   axios: ^0.21.1
   bufferutil: ^4.0.3
   discord.js: ^12.5.3
@@ -29,6 +30,9 @@ dependencies:
 
 optionalDependencies:
   '@discordjs/opus': 0.5.3
+
+devDependencies:
+  '@types/node': 15.14.0
 
 packages:
 
@@ -74,6 +78,10 @@ packages:
       - supports-color
     dev: false
     optional: true
+
+  /@types/node/15.14.0:
+    resolution: {integrity: sha512-um/+/ip3QZmwLfIkWZSNtQIJNVAqrJ92OkLMeuZrjZMTAJniI7fh8N8OICyDhAJ2mzgk/fmYFo72jRr5HyZ1EQ==}
+    dev: true
 
   /abbrev/1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}

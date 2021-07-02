@@ -34,5 +34,8 @@
   },
   "optionalDependencies": {
     "@discordjs/opus": "^0.5.3"
+  },
+  "devDependencies": {
+    "@types/node": "^15.14.0"
   }
 }
