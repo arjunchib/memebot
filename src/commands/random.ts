@@ -10,7 +10,7 @@ export default new Command({
       const name = msg.content.slice(1);
       try {
         const res = await axios.get(
-          `${process.env.MEME_ARCHIVE_BASE_URL}/commands/${name}.json`
+          `${process.env.MEME_ARCHIVE_BASE_URL}/memes/random.json`
         );
         const connection = await msg.member.voice.channel.join();
         const dispatcher = connection.play(res.data.audio);
@@ -19,11 +19,7 @@ export default new Command({
         });
         dispatcher.on("error", console.error);
       } catch (e) {
-        if (e.response.status === 404) {
-          msg.react("🤷");
-        } else {
-          console.error(e);
-        }
+        console.error(e);
       }
     } else {
       msg.reply("You need to join a voice channel first!");
