@@ -2,6 +2,8 @@ import { Command } from "disky";
 import axios from "axios";
 
 export default new Command({
+  usage: "!random",
+  description: "Plays a random meme",
   async command({ msg, client }) {
     if (msg.member.voice.channel) {
       if (client.voice.connections.has(msg.member.voice.channel.id)) {

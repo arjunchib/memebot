@@ -2,6 +2,9 @@ import { Command } from "disky";
 import axios from "axios";
 
 export default new Command({
+  usage: "![meme]",
+  example: "!dennys",
+  description: "Plays a meme in the current voice channel",
   async command({ msg, client }) {
     if (msg.member.voice.channel) {
       if (client.voice.connections.has(msg.member.voice.channel.id)) {
