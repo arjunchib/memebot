@@ -1,6 +1,12 @@
 import { Command } from "disky";
 import axios from "axios";
 
+let epoch;
+
+function debug(event) {
+  console.debug(event, Date.now() - epoch);
+}
+
 export default new Command({
   usage: "![meme]",
   example: "!dennys",
@@ -12,11 +18,18 @@ export default new Command({
       }
       const name = msg.content.slice(1);
       try {
+        epoch = Date.now();
+        debug(`start ${name}`);
         const res = await axios.get(
           `${process.env.MEME_ARCHIVE_BASE_URL}/commands/${name}.json`
         );
+        debug("downloaded");
+        const audioReq = axios.get(res.data.audio, { responseType: "stream" });
         const connection = await msg.member.voice.channel.join();
-        const dispatcher = connection.play(res.data.audio);
+        debug("joined");
+        const stream = await audioReq;
+        const dispatcher = connection.play(stream.data, { type: "ogg/opus" });
+        debug("play");
         dispatcher.on("finish", () => {
           connection.disconnect();
         });
