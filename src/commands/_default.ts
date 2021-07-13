@@ -28,7 +28,7 @@ export default new Command({
         const connection = await msg.member.voice.channel.join();
         debug("joined");
         const stream = await audioReq;
-        const dispatcher = connection.play(stream.data, { type: "ogg/opus" });
+        const dispatcher = connection.play(stream.data);
         debug("play");
         dispatcher.on("finish", () => {
           connection.disconnect();
