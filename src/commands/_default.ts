@@ -16,7 +16,7 @@ export default new Command({
       if (client.voice.connections.has(msg.member.voice.channel.id)) {
         return;
       }
-      const name = msg.content.slice(1);
+      const name = msg.content.slice(process.env.PREFIX.length);
       try {
         epoch = Date.now();
         debug(`start ${name}`);
