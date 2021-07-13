@@ -22,7 +22,7 @@ export default new Command({
         });
         dispatcher.on("error", console.error);
       } catch (e) {
-        if (e.response.status === 404) {
+        if (e.response && e.response.status === 404) {
           msg.react("🤷");
         } else {
           console.error(e);
