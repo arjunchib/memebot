@@ -8,8 +8,8 @@ function debug(event) {
 }
 
 export default new Command({
-  usage: "![meme]",
-  example: "!dennys",
+  usage: "[meme]",
+  example: "dennys",
   description: "Plays a meme in the current voice channel",
   async command({ msg, client }) {
     if (msg.member.voice.channel) {

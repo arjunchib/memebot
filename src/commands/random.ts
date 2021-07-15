@@ -2,7 +2,7 @@ import { Command } from "disky";
 import axios from "axios";
 
 export default new Command({
-  usage: "!random",
+  usage: "random",
   description: "Plays a random meme",
   async command({ msg, client }) {
     if (msg.member.voice.channel) {
