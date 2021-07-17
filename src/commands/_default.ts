@@ -24,7 +24,10 @@ export default new Command({
           `${process.env.MEME_ARCHIVE_BASE_URL}/commands/${name}.json`
         );
         debug("downloaded");
-        const audioReq = axios.get(res.data.audio, { responseType: "stream" });
+        const audioURL = res.data.audio.startsWith("http")
+          ? res.data.audio
+          : `${process.env.MEME_ARCHIVE_BASE_URL}/${res.data.audio}`;
+        const audioReq = axios.get(audioURL, { responseType: "stream" });
         const connection = await msg.member.voice.channel.join();
         debug("joined");
         const stream = await audioReq;
