@@ -1,17 +1,19 @@
-import { Command } from "disky";
+import { Command, CommandContext, meta } from "disky";
 import axios from "axios";
 
-let epoch;
+let epoch = 0;
 
-function debug(event) {
+function debug(event: string) {
   console.debug(event, Date.now() - epoch);
 }
 
-export default new Command({
+@meta({
   usage: "[meme]",
   example: "dennys",
   description: "Plays a meme in the current voice channel",
-  async command({ msg, client }) {
+})
+export default class DefaultCommand implements Command {
+  async run({ msg, client }: CommandContext) {
     if (msg.member.voice.channel) {
       if (client.voice.connections.has(msg.member.voice.channel.id)) {
         return;
@@ -47,5 +49,5 @@ export default new Command({
     } else {
       msg.reply("You need to join a voice channel first!");
     }
-  },
-});
+  }
+}

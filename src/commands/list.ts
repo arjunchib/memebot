@@ -1,9 +1,11 @@
-import { Command } from "disky";
+import { Command, CommandContext, meta } from "disky";
 
-export default new Command({
+@meta({
   usage: "list",
   description: "Lists available memes",
-  command({ msg }) {
+})
+export default class ListCommand implements Command {
+  run({ msg }: CommandContext) {
     msg.reply("Visit memebot.life for a list of memes.");
-  },
-});
+  }
+}
