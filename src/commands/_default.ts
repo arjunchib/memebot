@@ -1,11 +1,8 @@
 import { Command, CommandContext, meta } from "disky";
+import { Message } from "discord.js";
+import { play } from "../voice/play";
 import axios from "axios";
-
-let epoch = 0;
-
-function debug(event: string) {
-  console.debug(event, Date.now() - epoch);
-}
+import { hasVoiceChannel, isPlaying } from "../voice/guards";
 
 @meta({
   usage: "[meme]",
@@ -13,41 +10,28 @@ function debug(event: string) {
   description: "Plays a meme in the current voice channel",
 })
 export default class DefaultCommand implements Command {
-  async run({ msg, client }: CommandContext) {
-    if (msg.member.voice.channel) {
-      if (client.voice.connections.has(msg.member.voice.channel.id)) {
-        return;
-      }
-      const name = msg.content.slice(process.env.PREFIX.length);
-      try {
-        epoch = Date.now();
-        debug(`start ${name}`);
-        const res = await axios.get(
-          `${process.env.MEME_ARCHIVE_BASE_URL}/commands/${name}.json`
-        );
-        debug("downloaded");
-        const audioURL = res.data.audio.startsWith("http")
-          ? res.data.audio
-          : `${process.env.MEME_ARCHIVE_BASE_URL}/${res.data.audio}`;
-        const audioReq = axios.get(audioURL, { responseType: "stream" });
-        const connection = await msg.member.voice.channel.join();
-        debug("joined");
-        const stream = await audioReq;
-        const dispatcher = connection.play(stream.data);
-        debug("play");
-        dispatcher.on("finish", () => {
-          connection.disconnect();
-        });
-        dispatcher.on("error", console.error);
-      } catch (e) {
-        if (e.response && e.response.status === 404) {
-          msg.react("🤷");
-        } else {
-          console.error(e);
-        }
-      }
-    } else {
-      msg.reply("You need to join a voice channel first!");
+  async run(ctx: CommandContext) {
+    if (isPlaying(ctx)) return;
+    if (!hasVoiceChannel(ctx)) {
+      return ctx.msg.reply("You need to join a voice channel first!");
     }
+    await this.playMeme(ctx.msg);
+  }
+
+  private async playMeme(msg: Message) {
+    const name = this.getMemeName(msg.content);
+    try {
+      const res = await axios.get(
+        `${process.env.MEME_ARCHIVE_BASE_URL}/commands/${name}.json`
+      );
+      await play(res.data.audio, msg.member.voice.channel);
+    } catch (e) {
+      if (e.response && e.response.status === 404) return msg.react("🤷");
+      throw e;
+    }
+  }
+
+  private getMemeName(content: string) {
+    return content.slice(process.env.PREFIX.length);
   }
 }
