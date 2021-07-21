@@ -1,7 +1,7 @@
 import { Command, CommandContext, meta } from "disky";
 import axios from "axios";
 
-interface Meme {
+interface CommandData {
   name: string;
 }
 
@@ -16,14 +16,14 @@ export default class SearchCommand implements Command {
       process.env.PREFIX.length + "search ".length
     );
     const res = await axios.get(
-      `${process.env.MEME_ARCHIVE_BASE_URL}/memes.json?s=${searchStr}`
+      `${process.env.MEME_ARCHIVE_BASE_URL}/commands.json?s=${searchStr}`
     );
     await msg.channel.send(this.resultText(res.data, searchStr));
   }
 
-  resultText(memes: Meme[], searchStr: string) {
-    return memes
-      .map((meme) => meme.name)
+  resultText(commands: CommandData[], searchStr: string) {
+    return commands
+      .map((command) => command.name)
       .join(", ")
       .replace(RegExp(searchStr, "gi"), `**$&**`);
   }
