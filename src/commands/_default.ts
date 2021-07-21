@@ -11,10 +11,10 @@ import { hasVoiceChannel, isPlaying } from "../voice/guards";
 })
 export default class DefaultCommand implements Command {
   async run(ctx: CommandContext) {
-    if (isPlaying(ctx)) return;
     if (!hasVoiceChannel(ctx)) {
       return ctx.msg.reply("You need to join a voice channel first!");
     }
+    if (isPlaying(ctx)) return;
     await this.playMeme(ctx.msg);
   }
 
