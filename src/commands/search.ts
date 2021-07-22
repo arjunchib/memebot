@@ -1,5 +1,5 @@
 import { Command, CommandContext, meta } from "disky";
-import axios from "axios";
+import memeArchive from "../services/meme-archive";
 
 interface CommandData {
   name: string;
@@ -15,9 +15,11 @@ export default class SearchCommand implements Command {
     const searchStr = msg.content.slice(
       process.env.PREFIX.length + "search ".length
     );
-    const res = await axios.get(
-      `${process.env.MEME_ARCHIVE_BASE_URL}/commands.json?s=${searchStr}`
-    );
+    const res = await memeArchive.get(`/commands.json`, {
+      params: {
+        s: searchStr,
+      },
+    });
     await msg.channel.send(this.resultText(res.data, searchStr));
   }
 

@@ -1,8 +1,8 @@
 import { Command, CommandContext, meta } from "disky";
-import axios from "axios";
 import { play } from "../voice/play";
 import { hasVoiceChannel, isPlaying } from "../voice/guards";
 import { Message } from "discord.js";
+import memeArchive from "../services/meme-archive";
 
 @meta({
   usage: "random",
@@ -18,9 +18,7 @@ export default class RandomCommand implements Command {
   }
 
   private async playMeme(msg: Message) {
-    const res = await axios.get(
-      `${process.env.MEME_ARCHIVE_BASE_URL}/memes/random.json`
-    );
+    const res = await memeArchive.get("/memes/random.json");
     await play(res.data.audio, msg.member.voice.channel);
   }
 }

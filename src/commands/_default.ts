@@ -1,8 +1,8 @@
 import { Command, CommandContext, meta } from "disky";
 import { Message } from "discord.js";
 import { play } from "../voice/play";
-import axios from "axios";
 import { hasVoiceChannel, isPlaying } from "../voice/guards";
+import memeArchive from "../services/meme-archive";
 
 @meta({
   usage: "[meme]",
@@ -21,9 +21,7 @@ export default class DefaultCommand implements Command {
   private async playMeme(msg: Message) {
     const name = this.getMemeName(msg.content);
     try {
-      const res = await axios.get(
-        `${process.env.MEME_ARCHIVE_BASE_URL}/commands/${name}.json`
-      );
+      const res = await memeArchive.get(`/commands/${name}.json`);
       await play(res.data.audio, msg.member.voice.channel);
     } catch (e) {
       if (e.response && e.response.status === 404) return msg.react("🤷");
