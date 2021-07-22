@@ -2,6 +2,7 @@ app.js
 app.js.map
 .DS_Store
 .disky
+pm2.config.cjs
 
 # Logs
 logs
