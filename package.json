@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "disky",
-    "serve": "disky serve"
+    "serve": "disky serve",
+    "deploy": "ssh memebot < deploy.sh"
   },
   "repository": {
     "type": "git",
