@@ -22,7 +22,11 @@ export default class DefaultCommand implements Command {
     const name = this.getMemeName(msg.content);
     try {
       const res = await memeArchive.get(`/commands/${name}.json`);
-      await play(res.data.audio, msg.member.voice.channel);
+      await play({
+        url: res.data.audio,
+        channel: msg.member.voice.channel,
+        name: res.data.name,
+      });
     } catch (e) {
       if (e.response && e.response.status === 404) return msg.react("🤷");
       throw e;

@@ -19,6 +19,12 @@ export default class RandomCommand implements Command {
 
   private async playMeme(msg: Message) {
     const res = await memeArchive.get("/memes/random.json");
-    await play(res.data.audio, msg.member.voice.channel);
+    const name = res.data.name;
+    await play({
+      url: res.data.audio,
+      channel: msg.member.voice.channel,
+      name,
+    });
+    msg.channel.send(`Playing ${name}`);
   }
 }
