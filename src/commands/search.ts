@@ -6,21 +6,27 @@ interface CommandData {
 }
 
 @meta({
-  usage: "search",
+  name: "search",
   description: "Finds memes by command",
+  options: [
+    {
+      name: "meme",
+      type: "STRING",
+      description: "The pattern to search for",
+      required: true,
+    },
+  ],
 })
 export default class SearchCommand implements Command {
   async run(ctx: CommandContext) {
-    const { msg } = ctx;
-    const searchStr = msg.content.slice(
-      process.env.PREFIX.length + "search ".length
-    );
+    const { interaction } = ctx;
+    const searchStr = interaction.options.getString("meme");
     const res = await memeArchive.get(`/commands.json`, {
       params: {
         s: searchStr,
       },
     });
-    await msg.channel.send(this.resultText(res.data, searchStr));
+    await interaction.reply(this.resultText(res.data, searchStr));
   }
 
   resultText(commands: CommandData[], searchStr: string) {

@@ -1,7 +1,11 @@
+// @ts-check
+
+/**
+ * @type {import('Disky').ClientOptions}
+ */
 const options = {
-  prefix: process.env.PREFIX,
   token: process.env.BOT_TOKEN,
-  intents: ["GUILD_VOICE_STATES"],
+  guildId: process.env.GUILD_ID,
 };
 
 export default options;
