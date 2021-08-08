@@ -1,8 +1,8 @@
 import { Command, CommandContext, meta } from "disky";
 import { play } from "../voice/play";
 import { hasVoiceChannel, isPlaying } from "../voice/guards";
-import { Message } from "discord.js";
 import memeArchive from "../services/meme-archive";
+import type { Message } from "discord.js";
 
 @meta({
   usage: "random",

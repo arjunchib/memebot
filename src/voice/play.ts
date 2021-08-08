@@ -1,9 +1,16 @@
-import { VoiceChannel } from "discord.js";
 import axios from "axios";
+import {
+  AudioPlayerStatus,
+  createAudioPlayer,
+  createAudioResource,
+  joinVoiceChannel,
+  StreamType,
+} from "@discordjs/voice";
+import type { VoiceChannel, StageChannel } from "discord.js";
 
 interface PlayInput {
   url: string;
-  channel: VoiceChannel;
+  channel: VoiceChannel | StageChannel;
   name: string;
 }
 
@@ -12,13 +19,23 @@ export async function play({ url, channel, name }: PlayInput) {
     ? url
     : `${process.env.MEME_ARCHIVE_BASE_URL}/${url}`;
   const audioReq = axios.get(audioURL, { responseType: "stream" });
-  const connection = await channel.join();
+  const connection = joinVoiceChannel({
+    channelId: channel.id,
+    guildId: channel.guild.id,
+    adapterCreator: channel.guild.voiceAdapterCreator,
+  });
+  const player = createAudioPlayer();
+  connection.subscribe(player);
   const stream = await audioReq;
-  const dispatcher = connection.play(stream.data);
-  channel.client.user.setActivity(name);
-  dispatcher.on("finish", () => {
-    connection.disconnect();
+  const resource = createAudioResource(stream.data);
+  player.on("error", (error) => {
+    console.error(error);
+  });
+  player.on(AudioPlayerStatus.Idle, () => {
+    player.stop();
+    connection.destroy();
     channel.client.user.setActivity();
   });
-  dispatcher.on("error", console.error);
+  channel.client.user.setActivity(name);
+  player.play(resource);
 }

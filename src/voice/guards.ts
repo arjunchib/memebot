@@ -1,7 +1,8 @@
-import { CommandContext } from "../../../disky/lib";
+import { getVoiceConnection } from "@discordjs/voice";
+import { CommandContext } from "disky";
 
 export function isPlaying({ msg, client }: CommandContext) {
-  return client.voice.connections.has(msg.member.voice.channel.id);
+  return !!getVoiceConnection(msg.member.voice.channel.id);
 }
 
 export function hasVoiceChannel({ msg }: CommandContext) {
