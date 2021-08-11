@@ -7,7 +7,7 @@
   "scripts": {
     "start": "disky",
     "serve": "disky serve",
-    "deploy": "ssh memebot < deploy.sh"
+    "deploy": "ssh root@memebot < deploy.sh"
   },
   "repository": {
     "type": "git",

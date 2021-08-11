@@ -1,7 +1,6 @@
 import { Command, CommandContext, meta } from "disky";
-import { play } from "../voice/play";
 import memeArchive from "../services/meme-archive";
-import type { CommandInteraction, VoiceChannel } from "discord.js";
+import { isPlaying, play, getChannel } from "../voice";
 
 @meta({
   name: "play",
@@ -16,29 +15,29 @@ import type { CommandInteraction, VoiceChannel } from "discord.js";
   ],
 })
 export default class DefaultCommand implements Command {
-  async run(ctx: CommandContext) {
-    await this.playMeme(ctx.interaction);
-  }
-
-  private async playMeme(interaction: CommandInteraction) {
-    const name = interaction.options.getString("meme");
+  async run({ interaction }: CommandContext) {
+    const meme = interaction.options.getString("meme");
     try {
-      const res = await memeArchive.get(`/commands/${name}.json`);
-      const channels = await interaction.guild.channels.fetch();
-      const channel = channels.find(
-        (channel) => channel.type === "GUILD_VOICE"
-      ) as VoiceChannel;
+      const [channel, res] = await Promise.all([
+        getChannel(interaction),
+        memeArchive.get(`/commands/${meme}.json`),
+      ]);
+      const { name, audio } = res.data;
+      if (!channel) {
+        return await interaction.reply(
+          "Must have a voice channel to play memes"
+        );
+      }
+      if (isPlaying(channel)) {
+        return await interaction.reply("A meme is already playing");
+      }
       Promise.all([
-        play({
-          url: res.data.audio,
-          channel,
-          name: res.data.name,
-        }),
-        interaction.reply(`Playing ${res.data.name}`),
+        interaction.reply(`Playing ${name}`),
+        play(audio, channel, { name }),
       ]);
     } catch (e) {
       if (e.response && e.response.status === 404) {
-        return interaction.reply("Could not find meme with that name");
+        return await interaction.reply("Could not find meme with that name");
       }
       throw e;
     }
