@@ -4,7 +4,6 @@ import {
   createAudioPlayer,
   createAudioResource,
   joinVoiceChannel,
-  StreamType,
 } from "@discordjs/voice";
 import type { VoiceChannel, StageChannel } from "discord.js";
 
@@ -17,7 +16,7 @@ interface PlayInput {
 export async function play({ url, channel, name }: PlayInput) {
   const audioURL = url.startsWith("http")
     ? url
-    : `${process.env.MEME_ARCHIVE_BASE_URL}/${url}`;
+    : `${process.env.MEME_ARCHIVE_BASE_URL}${url}`;
   const audioReq = axios.get(audioURL, { responseType: "stream" });
   const connection = joinVoiceChannel({
     channelId: channel.id,
@@ -28,14 +27,13 @@ export async function play({ url, channel, name }: PlayInput) {
   connection.subscribe(player);
   const stream = await audioReq;
   const resource = createAudioResource(stream.data);
-  player.on("error", (error) => {
-    console.error(error);
-  });
   player.on(AudioPlayerStatus.Idle, () => {
     player.stop();
     connection.destroy();
     channel.client.user.setActivity();
   });
+  player.on("error", console.error);
+  connection.on("error", console.error);
   channel.client.user.setActivity(name);
   player.play(resource);
 }

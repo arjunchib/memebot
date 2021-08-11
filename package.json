@@ -21,6 +21,7 @@
   "homepage": "https://github.com/fraiser-fan-club/memebot#readme",
   "dependencies": {
     "@discordjs/voice": "^0.5.6",
+    "@discordjs/opus": "github:discordjs/opus",
     "axios": "^0.21.1",
     "discord.js": "^13.0.1",
     "sodium": "^3.0.2"

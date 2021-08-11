@@ -1,8 +1,7 @@
 import { Command, CommandContext, meta } from "disky";
 import { play } from "../voice/play";
-import { hasVoiceChannel, isPlaying } from "../voice/guards";
 import memeArchive from "../services/meme-archive";
-import type { CommandInteraction, GuildMember } from "discord.js";
+import type { CommandInteraction, VoiceChannel } from "discord.js";
 
 @meta({
   name: "play",
@@ -18,10 +17,6 @@ import type { CommandInteraction, GuildMember } from "discord.js";
 })
 export default class DefaultCommand implements Command {
   async run(ctx: CommandContext) {
-    if (!hasVoiceChannel(ctx)) {
-      return ctx.interaction.reply("You need to join a voice channel first!");
-    }
-    if (isPlaying(ctx)) return;
     await this.playMeme(ctx.interaction);
   }
 
@@ -29,10 +24,14 @@ export default class DefaultCommand implements Command {
     const name = interaction.options.getString("meme");
     try {
       const res = await memeArchive.get(`/commands/${name}.json`);
+      const channels = await interaction.guild.channels.fetch();
+      const channel = channels.find(
+        (channel) => channel.type === "GUILD_VOICE"
+      ) as VoiceChannel;
       Promise.all([
         play({
           url: res.data.audio,
-          channel: (interaction.member as GuildMember).voice.channel,
+          channel,
           name: res.data.name,
         }),
         interaction.reply(`Playing ${res.data.name}`),
