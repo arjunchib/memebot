@@ -1,11 +1,11 @@
-import { Command, CommandContext, meta } from "disky";
+import { Command, CommandContext, slash } from "disky";
 import memeArchive from "../services/meme-archive";
 
 interface CommandData {
   name: string;
 }
 
-@meta({
+@slash({
   name: "search",
   description: "Finds memes by command",
   options: [
@@ -17,9 +17,8 @@ interface CommandData {
     },
   ],
 })
-export default class SearchCommand implements Command {
-  async run(ctx: CommandContext) {
-    const { interaction } = ctx;
+export default class SearchCommand extends Command {
+  async run({ interaction }: CommandContext) {
     const searchStr = interaction.options.getString("meme");
     const res = await memeArchive.get(`/commands.json`, {
       params: {

@@ -1,12 +1,12 @@
-import { Command, CommandContext, meta } from "disky";
+import { Command, CommandContext, slash } from "disky";
 import memeArchive from "../services/meme-archive";
 import { isPlaying, play, getChannel } from "../voice";
 
-@meta({
+@slash({
   name: "random",
   description: "Plays a random meme",
 })
-export default class RandomCommand implements Command {
+export default class RandomCommand extends Command {
   async run({ interaction }: CommandContext) {
     const [channel, res] = await Promise.all([
       getChannel(interaction),

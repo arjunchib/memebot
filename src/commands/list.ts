@@ -1,10 +1,10 @@
-import { Command, CommandContext, meta } from "disky";
+import { Command, CommandContext, slash } from "disky";
 
-@meta({
+@slash({
   name: "list",
   description: "Lists available memes",
 })
-export default class ListCommand implements Command {
+export default class ListCommand extends Command {
   async run({ interaction }: CommandContext) {
     await interaction.reply("Visit memebot.life for a list of memes.");
   }

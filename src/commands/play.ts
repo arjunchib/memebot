@@ -1,8 +1,8 @@
-import { Command, CommandContext, meta } from "disky";
+import { Command, CommandContext, slash } from "disky";
 import memeArchive from "../services/meme-archive";
 import { isPlaying, play, getChannel } from "../voice";
 
-@meta({
+@slash({
   name: "play",
   description: "Plays a meme in the current voice channel",
   options: [
@@ -14,7 +14,7 @@ import { isPlaying, play, getChannel } from "../voice";
     },
   ],
 })
-export default class DefaultCommand implements Command {
+export default class DefaultCommand extends Command {
   async run({ interaction }: CommandContext) {
     const meme = interaction.options.getString("meme");
     try {
