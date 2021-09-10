@@ -32,12 +32,12 @@ export default class DefaultCommand extends Command {
         return await interaction.reply("A meme is already playing");
       }
       Promise.all([
-        interaction.reply(`Playing ${name}`),
+        interaction.reply(`Playing *${name}*`),
         play(audio, channel, { name }),
       ]);
     } catch (e) {
       if (e.response && e.response.status === 404) {
-        return await interaction.reply("Could not find meme with that name");
+        return await interaction.reply(`Could not find meme *${meme}*`);
       }
       throw e;
     }

@@ -30,7 +30,7 @@ export default class SearchCommand extends Command {
 
   resultText(commands: CommandData[], searchStr: string) {
     if (commands.length === 0) {
-      return "*Couldn't find any memes*";
+      return "Couldn't find any memes";
     }
     return commands
       .map((command) => command.name)
